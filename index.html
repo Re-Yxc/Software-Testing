@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件测试面试题</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="page-orb orb-1"></div>
+    <div class="page-orb orb-2"></div>
+    <div class="page-orb orb-3"></div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>软件测试面试题库</h1>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索面试题...">
+                    <button id="searchBtn" aria-label="搜索">🔍</button>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-shell">
+                <div class="content-header">
+                    <button class="menu-toggle" id="menuToggle" aria-label="切换菜单">☰</button>
+                    <span class="breadcrumb" id="breadcrumb">首页</span>
+                    <button class="theme-toggle" id="themeToggle" aria-label="切换暗黑模式">🌙</button>
+                </div>
+                <div class="content-body" id="contentBody">
+                    <div class="welcome">
+                        <div class="welcome-badge">Re-Yxc</div>
+                        <h2>欢迎来到软件测试面试题库</h2>
+                        <p>测试理论、项目经验、接口测试、自动化与性能测试等</p>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-number" id="totalQuestions">0</span>
+                                <span class="stat-label">面试题目</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="totalCategories">0</span>
+                                <span class="stat-label">分类数量</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal" id="searchModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>搜索结果</h3>
+                <button class="close-btn" id="closeModal" aria-label="关闭">&times;</button>
+            </div>
+            <div class="modal-body" id="searchResults"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
