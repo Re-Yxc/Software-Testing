@@ -531,12 +531,33 @@ function updateStats() {
 
 // 设置事件监听器
 function isNarrowScreenLayout() {
-    return window.getComputedStyle(menuToggle).display !== 'none';
+    return window.matchMedia('(max-width: 768px)').matches || window.getComputedStyle(menuToggle).display !== 'none';
 }
 
-function closeSidebarOnNarrowScreen() {
+function logSidebarState(stage, extra = {}) {
+    console.log('[sidebar-debug]', stage, {
+        narrow: isNarrowScreenLayout(),
+        width: window.innerWidth,
+        menuDisplay: window.getComputedStyle(menuToggle).display,
+        sidebarClass: sidebar.className,
+        ...extra,
+    });
+}
+
+function setSidebarOpen(isOpen) {
+    sidebar.classList.toggle('open', isOpen);
+    document.body.classList.toggle('sidebar-open', isOpen && isNarrowScreenLayout());
+    logSidebarState(isOpen ? 'open-sidebar' : 'close-sidebar');
+}
+
+function closeSidebarOnNarrowScreen(reason = 'unknown') {
     if (isNarrowScreenLayout()) {
-        sidebar.classList.remove('open');
+        setSidebarOpen(false);
+        sidebar.style.transform = 'translate3d(calc(-100% - 18px), 0, 0)';
+        requestAnimationFrame(() => {
+            sidebar.style.transform = '';
+        });
+        logSidebarState('close-sidebar-on-narrow', { reason });
     }
 }
 
@@ -555,14 +576,24 @@ function setupEventListeners() {
 
             const file = navItem.dataset.file;
             const category = navItem.dataset.category;
-            loadContent(file, category, navItem.textContent.trim());
-            closeSidebarOnNarrowScreen();
+            const title = navItem.textContent.trim();
+
+            if (isNarrowScreenLayout()) {
+                closeSidebarOnNarrowScreen('nav-item-click');
+                requestAnimationFrame(() => {
+                    loadContent(file, category, title);
+                });
+                return;
+            }
+
+            loadContent(file, category, title);
         }
     });
 
     menuToggle.addEventListener('click', (e) => {
         e.stopPropagation();
-        sidebar.classList.toggle('open');
+        setSidebarOpen(!sidebar.classList.contains('open'));
+        logSidebarState('menu-toggle-click');
     });
 
     themeToggle.addEventListener('click', toggleTheme);
@@ -592,6 +623,7 @@ function setupEventListeners() {
             const title = resultItem.dataset.title;
 
             searchModal.classList.remove('active');
+            closeSidebarOnNarrowScreen('search-result-click');
             loadContent(file, category, title);
 
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -601,6 +633,12 @@ function setupEventListeners() {
                     item.closest('.nav-category').classList.add('expanded');
                 }
             });
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        if (!isNarrowScreenLayout()) {
+            setSidebarOpen(false);
         }
     });
 }

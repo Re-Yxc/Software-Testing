@@ -1083,12 +1083,25 @@ body.dark-mode mark {
         width: calc(100vw - 28px);
         max-width: 360px;
         inset: 14px auto 14px 14px;
-        transform: translateX(calc(-100% - 18px));
-        transition: transform 0.35s var(--motion-spring);
+        transform: translate3d(calc(-100% - 18px), 0, 0);
+        transition: transform 0.35s var(--motion-spring), visibility 0.35s ease;
+        will-change: transform;
+        visibility: hidden;
+        pointer-events: none;
     }
 
     .sidebar.open {
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .sidebar:hover {
+        transform: translate3d(calc(-100% - 18px), 0, 0);
+    }
+
+    .sidebar.open:hover {
+        transform: translate3d(0, 0, 0);
     }
 
     .main-content {
