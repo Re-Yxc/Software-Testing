@@ -530,6 +530,16 @@ function updateStats() {
 }
 
 // 设置事件监听器
+function isNarrowScreenLayout() {
+    return window.getComputedStyle(menuToggle).display !== 'none';
+}
+
+function closeSidebarOnNarrowScreen() {
+    if (isNarrowScreenLayout()) {
+        sidebar.classList.remove('open');
+    }
+}
+
 function setupEventListeners() {
     sidebarNav.addEventListener('click', (e) => {
         const header = e.target.closest('.nav-category-header');
@@ -546,14 +556,12 @@ function setupEventListeners() {
             const file = navItem.dataset.file;
             const category = navItem.dataset.category;
             loadContent(file, category, navItem.textContent.trim());
-
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('open');
-            }
+            closeSidebarOnNarrowScreen();
         }
     });
 
-    menuToggle.addEventListener('click', () => {
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
         sidebar.classList.toggle('open');
     });
 
